@@ -4,10 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <title>First Vue</title>
+    <style>
+        div.box {
+            width: 50px;
+            height: 50px;
+            background-color: salmon;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+    <title>First Vue : Create Instance, Methods, and Directives</title>
 </head>
 <body>
     <div id="app">
+        <form @submit.prevent="handleSubmitForm">
+            <input type="text">
+            <button type="submit">
+                Submit
+            </button>
+        </form>
+
+        <div class="box" @mousemove="getCoordinate">
+            <h3>{{ x }}, {{ y }}</h3>
+
+        </div>
+
+        <p v-once>
+            {{ name }}
+        </p>
+        {{ updateName() }}
+
+        <p>{{ text }}</p>
+        <button v-on:click="updateText('Victor', $e)">
+            Change Text
+        </button>
+
+        <button @click="updateText('Rossie', $e)">
+            Change Text 2
+        </button>
+
+        <p v-for="(child, index) in children">
+            {{ child }} : {{ index }}
+        </p>
+
+        <ul>
+            <li v-for="(car, index) in cars">
+                {{ car.brand }} : {{ car.color }} : {{ index }}
+            </li>
+        </ul>
+
+        <ul>
+            <li v-for="(value, key, index) in people">
+                {{ key }} : {{ value }} : {{ index }}
+            </li>
+        </ul>
+
+        <!-- <p v-if="weight > allowedWeight">
+            Kamu boleh bertanding di kelas 60kg
+        </p> -->
+        <p v-if="checkWeight()">
+            Kamu boleh bertanding di kelas 60kg
+        </p>
+        <p v-else-if="name === 'chris'">
+            Kamu tetap boleh
+        </p>
+        <p v-else>
+            Kamu tidak boleh bertanding di kelas 60kg
+        </p>
+
+        <p v-show="!checkWeight()">
+            Ini menggunakan vshow (not check)
+        </p>
+
         <h1>{{ message }}</h1>
 
         <p>{{ isItTrue }}</p>
@@ -19,11 +88,100 @@
         <h3>{{ greeting }}</h3>
 
         <h3>{{ myFunc() }}</h3>
+
+        <h3>{{ myFuncMethods() }}</h3>
+
+        <img v-bind:src="img" :alt="alt">
+
+        <h1 v-text="message"></h1>
+
+        <p v-html="myHtml"></p>
+
+        <a :href="myLink">Go to Google</a>
     </div>
 
     
     <script>
         const { createApp } = Vue;
+
+        const App = {
+            data(){
+                return {
+                    x: 0,
+                    y: 0,
+                    text: "First Text",
+                    children: [
+                        "Budi",
+                        "Zacky"
+                    ],
+                    cars : [
+                        {
+                            brand: "honda",
+                            color: "white",
+                        },
+                        {
+                            brand: "toyota",
+                            color: "red",
+                        }
+                    ],
+                    people : {
+                        name: "Frank",
+                        age: 29
+                    },
+                    weight: 50,
+                    allowedWeight: 60,
+                    name: "chris",
+                    myHtml: "<strong>Strong</strong>",
+                    myLink: "https://google.com",
+                    img: "https://picsum.photos/200/300",
+                    alt: "image",
+                    message : "Hello, Vue!",
+                    isItTrue : true,
+                    myArr : [
+                        "Andi",
+                        "Bob",
+                        "Cindy"
+                    ],
+                    myObj : {
+                        name : "Andi",
+                        job : "Teacher"
+                    },
+                    greeting : `Today is ${new Date().toLocaleString()}`,
+                    myFunc : () => {
+                        return `My name is ${this.myArr[0]}`
+                    }
+                }
+            },
+
+            methods: {
+                myFuncMethods(){
+                    const randomIdx = Math.floor(Math.random() * this.myArr.length)
+                    return `Hello from methods, ${this.myArr[randomIdx]}`;
+                },
+                checkWeight(){
+                    return this.weight > this.allowedWeight ? true : false;
+                },
+                updateName(){
+                    setTimeout(()=>{
+                        this.name = "John";
+                    }, 1000);
+                },
+                updateText(newName, e){
+                    this.text = newName;
+                },
+                getCoordinate(e){
+                    console.log(e.clientX, e.clientY);
+                    this.x = e.clientX;
+                    this.y = e.clientY;
+                },
+                handleSubmitForm(e){
+                    // e.preventDefault();
+                    alert("Submit..");
+                }
+            }
+        }
+
+        Vue.createApp(App).mount("#app");
         /*
         createApp({
             data(){
@@ -47,30 +205,6 @@
             }
         }).mount("#app");
         */
-
-        const App = {
-            data(){
-                return {
-                    message : "Hello, Vue!",
-                    isItTrue : true,
-                    myArr : [
-                        "Andi",
-                        "Bob",
-                        "Cindy"
-                    ],
-                    myObj : {
-                        name : "Andi",
-                        job : "Teacher"
-                    },
-                    greeting : `Today is ${new Date().toLocaleString()}`,
-                    myFunc : () => {
-                        return `My name is ${this.myArr[0]}`
-                    }
-                }
-            }
-        }
-
-        Vue.createApp(App).mount("#app");
     </script>
 </body>
 </html>
