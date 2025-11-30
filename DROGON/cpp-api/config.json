@@ -1,0 +1,26 @@
+{
+  "listeners": [
+    {
+      "address": "0.0.0.0",
+      "port": 5555,
+      "https": false
+    }
+  ],
+  "app": {
+    "threads_num": 0
+  },
+  "plugins": [],
+  "document_root": "",
+  "static": {
+    "enable": false
+  },
+  "headers": {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "Content-Type, x-api-key",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS"
+  },
+  "log": {
+    "log_path": "",
+    "log_level": "INFO"
+  }
+}
